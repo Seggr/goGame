@@ -12,5 +12,17 @@ namespace goGame.Controllers
 		{
 			return View();
 		}
+
+		public IActionResult Register()
+		{
+			return View("Index");
+		}
+
+		[HttpPost]
+		public IActionResult Register(string email)
+		{
+			ViewData["registeredEmail"] = email;
+			return View();
+		}
 	}
 }

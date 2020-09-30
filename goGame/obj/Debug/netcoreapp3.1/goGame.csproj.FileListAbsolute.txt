@@ -36,3 +36,4 @@ C:\Users\Dave\source\repos\goGame\goGame\obj\Debug\netcoreapp3.1\goGame.dll
 C:\Users\Dave\source\repos\goGame\goGame\obj\Debug\netcoreapp3.1\goGame.pdb
 C:\Users\Dave\source\repos\goGame\goGame\obj\Debug\netcoreapp3.1\goGame.genruntimeconfig.cache
 C:\Users\Dave\source\repos\goGame\goGame\obj\Debug\netcoreapp3.1\goGame.csproj.CopyComplete
+C:\Users\Dave\source\repos\goGame\goGame\obj\Debug\netcoreapp3.1\Razor\Views\Registration\Register.cshtml.g.cs
