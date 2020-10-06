@@ -11,6 +11,7 @@ namespace goGame
     class Program
     {
         const string emailValidationRegex = @"^(?("")("".+?(?<!\\)""@)|(([0-9a-z]((\.(?!\.))|[-!#\$%&'\*\+/=\?\^`\{\}\|~\w])*)(?<=[0-9a-z])@))(?(\[)(\[(\d{1,3}\.){3}\d{1,3}\])|(([0-9a-z][-\w]*[0-9a-z]*\.)+[a-z0-9][\-a-z0-9]{0,22}[a-z0-9]))$";
+
         static async Task Main(string[] args)
         {
             string userInput = "";
@@ -35,7 +36,7 @@ namespace goGame
                         }
                         break;
                     case "2":
-                        //Login Menu
+                        await LoginPlayerMenu();
                         break;
                     case "Q":
                     case "q":
@@ -89,6 +90,44 @@ namespace goGame
                 return false;
             }
 
+        }
+
+        static async Task LoginPlayerMenu()
+        {
+            string ServiceBusConnectionString = ConfigurationManager.AppSettings.Get("ServiceBusConnectionString");
+            ManagementClient managementClient = new ManagementClient(ServiceBusConnectionString);
+            string email = "";
+
+            for (; email.ToLower() != "q";)
+            {
+                Console.WriteLine("Enter your email address to login (type 'q' to quit).");
+                Console.Write("Email:");
+                email = Console.ReadLine();
+
+                if (Regex.IsMatch(email, emailValidationRegex, RegexOptions.IgnoreCase))
+                {
+                    email = email.Replace("@", "_");
+
+                    var currentQueues = await managementClient.GetQueuesAsync();
+
+                    if (currentQueues.Contains(new QueueDescription(email)))
+                    {
+                        Console.WriteLine("Display player menu!");
+                    }
+                    else
+                    {
+                        Console.WriteLine("Player isn't registered. Please try again.");
+                    }
+                }
+                else if (email.ToLower() == "q")
+                {
+                    return;
+                }
+                else
+                {
+                    Console.WriteLine("Invalid email address. Please try again.");
+                }
+            }
         }
     }
 }
