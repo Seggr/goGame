@@ -20,13 +20,21 @@ namespace goGame
 			}
 		}
 
+		static void LoginScreen()
+		{
+			Console.WriteLine("Welcome to the game of Go! Masters of Chess!\n\n\n");
+
+
+		}
+
+
 		static async Task<bool> RegisterPlayer()
 		{
 			string ServiceBusConnectionString = ConfigurationManager.AppSettings.Get("ServiceBusConnectionString");
 			ManagementClient managementClient = new ManagementClient(ServiceBusConnectionString);
 			string email;
 
-			Console.WriteLine("Welcome to the game of Go! Masters of Chess!\n\n\n");
+			
 			Console.WriteLine("Enter your email address to register (Ctrl+C to exit registration).");
 			Console.Write("Email:");
 			email = Console.ReadLine();
