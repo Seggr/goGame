@@ -127,6 +127,8 @@ namespace goGame
                 {
                     Console.WriteLine("Invalid email address. Please try again.");
                 }
+                Console.WriteLine("\n\n");
+                Thread.Sleep(2000);
             }
         }
     }
