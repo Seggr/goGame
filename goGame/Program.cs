@@ -97,6 +97,7 @@ namespace goGame
             string ServiceBusConnectionString = ConfigurationManager.AppSettings.Get("ServiceBusConnectionString");
             ManagementClient managementClient = new ManagementClient(ServiceBusConnectionString);
             string email = "";
+            string userInput = "";
 
             for (; email.ToLower() != "q";)
             {
@@ -112,7 +113,29 @@ namespace goGame
 
                     if (currentQueues.Contains(new QueueDescription(email)))
                     {
-                        Console.WriteLine("Display player menu!");
+                        Console.WriteLine("What would you like to do?");
+                        Console.WriteLine("1. Start a new game");
+                        Console.WriteLine("2. Resume a current game");
+                        Console.WriteLine("Q. Quit");
+                        userInput = Console.ReadLine();
+
+                        switch (userInput)
+                        {
+                            case "1":
+                                listPlayers();
+                                break;
+                            case "2":
+                                getCurrentGames();
+                                break;
+                            case "Q":
+                            case "q":
+                                Console.WriteLine("Come again soon!");
+                                break;
+                            default:
+                                Console.WriteLine("Invalid input. Please try again.");
+                                Thread.Sleep(1000);
+                                break;
+                        }
                     }
                     else
                     {
@@ -130,6 +153,16 @@ namespace goGame
                 Console.WriteLine("\n\n");
                 Thread.Sleep(2000);
             }
+        }
+
+        private static void getCurrentGames()
+        {
+            throw new NotImplementedException();
+        }
+
+        private static void listPlayers()
+        {
+            throw new NotImplementedException();
         }
     }
 }
