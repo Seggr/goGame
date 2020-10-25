@@ -97,7 +97,6 @@ namespace goGame
             string ServiceBusConnectionString = ConfigurationManager.AppSettings.Get("ServiceBusConnectionString");
             ManagementClient managementClient = new ManagementClient(ServiceBusConnectionString);
             string email = "";
-            string userInput = "";
 
             for (; email.ToLower() != "q";)
             {
@@ -115,9 +114,9 @@ namespace goGame
                         Console.WriteLine("1. Start a new game");
                         Console.WriteLine("2. Resume a current game");
                         Console.WriteLine("Q. Quit");
-                        userInput = Console.ReadLine();
+                        email = Console.ReadLine();
 
-                        switch (userInput)
+                        switch (email)
                         {
                             case "1":
                                 startANewGame();
