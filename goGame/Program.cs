@@ -122,7 +122,7 @@ namespace goGame
                         switch (userInput)
                         {
                             case "1":
-                                listPlayers();
+                                startANewGame();
                                 break;
                             case "2":
                                 getCurrentGames();
@@ -155,10 +155,46 @@ namespace goGame
             }
         }
 
+        private static void startANewGame()
+        {
+            string userInput = "";
+
+            for(;userInput.ToLower() != "q";)
+            {
+                Console.WriteLine("Provide your opponent's email or select from a list (q to quit).");
+                Console.WriteLine("1. Enter an email");
+                Console.WriteLine("2. View list of players");
+                userInput = Console.ReadLine();
+                switch(userInput)
+                {
+                    case "1":
+                        sendRequest();
+                        break;
+                    case "2":
+                        listPlayers();
+                        break;
+                    case "Q":
+                    case "q":
+                        return;
+                    default:
+                        Console.WriteLine("Invalid input. Please try again.");
+                        Thread.Sleep(1000);
+                        break;
+                }
+            }
+        }
+
+        private static void sendRequest()
+        {
+            throw new NotImplementedException();
+        }
+
         private static void getCurrentGames()
         {
             throw new NotImplementedException();
         }
+
+
 
         private static void listPlayers()
         {
