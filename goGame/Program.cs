@@ -123,7 +123,7 @@ namespace goGame
                         switch (email)
                         {
                             case "1":
-                                startANewGame();
+                                await startANewGame();
                                 break;
                             case "2":
                                 Console.WriteLine("No games yet!");
