@@ -109,9 +109,7 @@ namespace goGame
                 {
                     email = email.Replace("@", "_");
 
-                    var currentQueues = await managementClient.GetQueuesAsync();
-
-                    if (currentQueues.Contains(new QueueDescription(email)))
+                    if (await managementClient.QueueExistsAsync(email))
                     {
                         Console.WriteLine("What would you like to do?");
                         Console.WriteLine("1. Start a new game");
@@ -125,7 +123,7 @@ namespace goGame
                                 startANewGame();
                                 break;
                             case "2":
-                                getCurrentGames();
+                                Console.WriteLine("No games yet!");
                                 break;
                             case "Q":
                             case "q":
@@ -151,54 +149,48 @@ namespace goGame
                     Console.WriteLine("Invalid email address. Please try again.");
                 }
                 Console.WriteLine("\n\n");
-                Thread.Sleep(2000);
+                Thread.Sleep(1000);
             }
         }
 
-        private static void startANewGame()
+        private static async Task startANewGame()
         {
-            string userInput = "";
+            string ServiceBusConnectionString = ConfigurationManager.AppSettings.Get("ServiceBusConnectionString");
+            ManagementClient managementClient = new ManagementClient(ServiceBusConnectionString);
+            string email = "";
 
-            for(;userInput.ToLower() != "q";)
+            for (; email.ToLower() != "q";)
             {
-                Console.WriteLine("Provide your opponent's email or select from a list (q to quit).");
-                Console.WriteLine("1. Enter an email");
-                Console.WriteLine("2. View list of players");
-                userInput = Console.ReadLine();
-                switch(userInput)
+                Console.WriteLine("Enter email address of player you would like to play (type 'q' to quit).");
+                Console.Write("Email:");
+                email = Console.ReadLine();
+
+                if (Regex.IsMatch(email, emailValidationRegex, RegexOptions.IgnoreCase))
                 {
-                    case "1":
-                        sendRequest();
-                        break;
-                    case "2":
-                        listPlayers();
-                        break;
-                    case "Q":
-                    case "q":
-                        return;
-                    default:
-                        Console.WriteLine("Invalid input. Please try again.");
-                        Thread.Sleep(1000);
-                        break;
+                    email = email.Replace("@", "_");
+                    if(await managementClient.QueueExistsAsync(email))
+                    {
+                        Console.WriteLine("Request sent!");
+                    }
+                    else
+                    {
+                        Console.WriteLine("Player is not registered");
+                    }
+
                 }
+                else if (email.ToLower() == "q")
+                {
+                    continue;
+                }
+                else
+                {
+                    Console.WriteLine("Invalid email address. Please try again.");
+                }
+                Console.WriteLine("\n\n");
+                Thread.Sleep(1000);
             }
         }
 
-        private static void sendRequest()
-        {
-            throw new NotImplementedException();
-        }
 
-        private static void getCurrentGames()
-        {
-            throw new NotImplementedException();
-        }
-
-
-
-        private static void listPlayers()
-        {
-            throw new NotImplementedException();
-        }
     }
 }
