@@ -60,7 +60,7 @@ namespace goGame
             string email;
 
 
-            Console.WriteLine("Enter your email address to register (Ctrl+C to exit registration).");
+            Console.WriteLine("Enter your email address to register (type 'q' to quit).");
             Console.Write("Email:");
             email = Console.ReadLine();
 
@@ -83,6 +83,10 @@ namespace goGame
                     await managementClient.CreateQueueAsync($"{email}");
                     return true;
                 }
+            }
+            else if(email.ToLower() == "q")
+            {
+                return true;
             }
             else
             {
