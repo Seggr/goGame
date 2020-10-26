@@ -36,7 +36,7 @@ namespace goGame
                         }
                         break;
                     case "2":
-                        await LoginPlayerMenu();
+                        await LoginMenu();
                         break;
                     case "Q":
                     case "q":
@@ -84,7 +84,7 @@ namespace goGame
                     return true;
                 }
             }
-            else if(email.ToLower() == "q")
+            else if (email.ToLower() == "q")
             {
                 return true;
             }
@@ -96,7 +96,7 @@ namespace goGame
 
         }
 
-        static async Task LoginPlayerMenu()
+        static async Task LoginMenu()
         {
             string ServiceBusConnectionString = ConfigurationManager.AppSettings.Get("ServiceBusConnectionString");
             ManagementClient managementClient = new ManagementClient(ServiceBusConnectionString);
@@ -114,29 +114,8 @@ namespace goGame
 
                     if (await managementClient.QueueExistsAsync(email))
                     {
-                        Console.WriteLine("What would you like to do?");
-                        Console.WriteLine("1. Start a new game");
-                        Console.WriteLine("2. Resume a current game");
-                        Console.WriteLine("Q. Quit");
-                        email = Console.ReadLine();
-
-                        switch (email)
-                        {
-                            case "1":
-                                await startANewGame();
-                                break;
-                            case "2":
-                                Console.WriteLine("No games yet!");
-                                break;
-                            case "Q":
-                            case "q":
-                                Console.WriteLine("Come again soon!");
-                                break;
-                            default:
-                                Console.WriteLine("Invalid input. Please try again.");
-                                Thread.Sleep(1000);
-                                break;
-                        }
+                        await PlayerMenu();
+                        email = "q";
                     }
                     else
                     {
@@ -156,6 +135,41 @@ namespace goGame
             }
         }
 
+        static async Task PlayerMenu()
+        {
+            string userInput = "";
+
+            for (; userInput.ToLower() != "q";)
+            {
+
+
+
+                Console.WriteLine("What would you like to do?");
+                Console.WriteLine("1. Start a new game");
+                Console.WriteLine("2. Resume a current game");
+                Console.WriteLine("Q. Quit");
+                userInput = Console.ReadLine();
+
+                switch (userInput)
+                {
+                    case "1":
+                        await startANewGame();
+                        break;
+                    case "2":
+                        Console.WriteLine("No games yet!");
+                        break;
+                    case "Q":
+                    case "q":
+                        Console.WriteLine("Come again soon!");
+                        break;
+                    default:
+                        Console.WriteLine("Invalid input. Please try again.");
+                        Thread.Sleep(1000);
+                        break;
+                }
+            }
+        }
+
         private static async Task startANewGame()
         {
             string ServiceBusConnectionString = ConfigurationManager.AppSettings.Get("ServiceBusConnectionString");
@@ -171,9 +185,10 @@ namespace goGame
                 if (Regex.IsMatch(email, emailValidationRegex, RegexOptions.IgnoreCase))
                 {
                     email = email.Replace("@", "_");
-                    if(await managementClient.QueueExistsAsync(email))
+                    if (await managementClient.QueueExistsAsync(email))
                     {
                         Console.WriteLine("Request sent!");
+                        email = "q";
                     }
                     else
                     {
